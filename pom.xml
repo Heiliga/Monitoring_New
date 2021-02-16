@@ -12,13 +12,12 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <spring.version>2.2.6.RELEASE</spring.version>
-        <maven-compiler-plugin>3.1</maven-compiler-plugin>
-        <tomcat-embed-core>9.0.33</tomcat-embed-core>
-        <jstl>1.2</jstl>
-        <tomcat-embed-jasper>9.0.27</tomcat-embed-jasper>
-        <spring-security-taglibs>5.2.0.RELEASE</spring-security-taglibs>
+        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+        <tomcat.version>9.0.27</tomcat.version>
         <jjwt.version>0.9.1</jjwt.version>
+        <jwt.version>1.1.1.RELEASE</jwt.version>
         <commons-lang3.version>3.11</commons-lang3.version>
+        <postgres.version>42.2.8</postgres.version>
     </properties>
 
     <dependencies>
@@ -45,13 +44,13 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.8</version>
+            <version>${postgres.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <version>${tomcat-embed-jasper}</version>
+            <version>${tomcat.version}</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -61,7 +60,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-jwt</artifactId>
-            <version>1.1.1.RELEASE</version>
+            <version>${jwt.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -80,7 +79,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin}</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
