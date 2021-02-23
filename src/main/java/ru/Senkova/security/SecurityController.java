@@ -14,7 +14,7 @@ import ru.Senkova.exception.UserAppRegistrationException;
 import ru.Senkova.security.jwt.JwtProvider;
 import ru.Senkova.security.jwt.JwtResponse;
 
-import static ru.Senkova.exception.ResponseCodeException.INT_CODE_6_EXCEPTION_CONTOLLER_REGISTRATION;
+import static ru.Senkova.exception.ResponseCodeException.INT_CODE_6_CONTOLLER_REGISTRATION;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -57,7 +57,7 @@ public class SecurityController {
                     signUpRequest.getPassword(),
                     signUpRequest.getEmail());
         } catch (UserAppRegistrationException e) {
-            e = new UserAppRegistrationException(INT_CODE_6_EXCEPTION_CONTOLLER_REGISTRATION);
+            e = new UserAppRegistrationException(INT_CODE_6_CONTOLLER_REGISTRATION);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
