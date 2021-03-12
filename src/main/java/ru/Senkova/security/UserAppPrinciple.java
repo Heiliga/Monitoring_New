@@ -22,18 +22,24 @@ public class UserAppPrinciple implements UserDetails {
     @JsonIgnore
     private String password;
 
-    private String fullName;
+    private String firstName;
+
+    private String lastName;
+
+    private String patronymic;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserAppPrinciple(){}
-    public UserAppPrinciple(Long id, String login, String email, String password, String fullName, Collection<? extends GrantedAuthority> authorities) {
+    public UserAppPrinciple(Long id, String login, String email, String hashPassword, String firstName, String lastName, String patronymic,
+        List<GrantedAuthority> authorities){
         this.id = id;
-        this.fullName = fullName;
-        this.password = password;
+        this.password = hashPassword;
         this.email=email;
         this.login=login;
         this.authorities=authorities;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.patronymic=patronymic;
 
     }
 
@@ -53,10 +59,6 @@ public class UserAppPrinciple implements UserDetails {
     @Override
     public String getPassword() {
         return password;
-    }
-
-    public String getFullName() {
-        return fullName;
     }
 
     @Override
@@ -106,7 +108,9 @@ public class UserAppPrinciple implements UserDetails {
                 user.getLogin(),
                 user.getEmail(),
                 user.getHashPassword(),
-                user.getFullName(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPatronymic(),
                 authorities
         );
     }

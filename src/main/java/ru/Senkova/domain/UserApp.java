@@ -8,11 +8,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "USERAPP")
+@Table(name = "USER_APP")
 public class UserApp {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userapp_id_generator")
-    @SequenceGenerator(name = "userapp_id_generator", sequenceName = "sq_userapp_id", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_app_id_generator")
+    @SequenceGenerator(name = "user_app_id_generator", sequenceName = "sq_user_app_id", allocationSize = 1)
     private Long id;
 
     @NaturalId
@@ -28,6 +28,8 @@ public class UserApp {
 
     private String email;
 
+    private boolean confirmationMail;
+
     @Transient
     private String passwordConfirm;
 
@@ -41,8 +43,8 @@ public class UserApp {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "ROLE_USERAPP",
-            joinColumns = @JoinColumn(name = "ID_USERAPP"),
+            name = "ROLE_USER_APP",
+            joinColumns = @JoinColumn(name = "ID_USER_APP"),
             inverseJoinColumns = @JoinColumn(name = "ID_ROLE")
     )
     private Set<Role> roles = new HashSet<>();
@@ -51,14 +53,15 @@ public class UserApp {
 
     }
 
-    public UserApp(String login, String firstName, String patronymic, String lastName, String hashPassword, String email) {
+/*    public UserApp(String login, String firstName, String patronymic, String lastName, String hashPassword, String email, boolean confirmationMail;) {
         this.login = login;
         this.firstName = firstName;
         this.patronymic = patronymic;
         this.lastName = lastName;
         this.hashPassword = hashPassword;
         this.email = email;
-    }
+        this.confirmationMail=confirmationMail;
+    }*/
 
     public Long getId() {
         return id;
@@ -124,21 +127,12 @@ public class UserApp {
         this.lastName = lastName;
     }
 
-    @JsonIgnore
-    public void setFullName(String fullName) {
-        String[] name = fullName.split(" ");
-        this.firstName = name[0];
-        if (name.length == 3) {
-            this.patronymic = name[1];
-            this.lastName = name[2];
-        } else {
-            this.lastName = name[1];
-        }
+    public boolean isConfirmationMail() {
+        return confirmationMail;
     }
 
-    @JsonIgnore
-    public String getFullName() {
-        return patronymic == null ? String.format("%s %s", firstName, lastName) : String.format("%s %s %s", firstName, patronymic, lastName);
+    public void setConfirmationMail(boolean confirmationMail) {
+        this.confirmationMail = confirmationMail;
     }
 }
 

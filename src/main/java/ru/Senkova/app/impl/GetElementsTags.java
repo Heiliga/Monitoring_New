@@ -5,11 +5,9 @@ import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.Senkova.exception.ParsingSoupException;
+import ru.Senkova.app.impl.monitoring.pages.PageSearch;
 
-import java.util.*;
-
-import static ru.Senkova.exception.ResponseCodeException.INT_CODE_5_NOT_FIND_TAG_FOR_ARTICLE;
+import static ru.Senkova.app.impl.ValidateVariable.VALID_URL_HREF;
 
 public class GetElementsTags {
 
@@ -20,7 +18,7 @@ public class GetElementsTags {
         return null;
     }
 
-    public static final Element getElementsTagInput(Document doc) {
+    public static final Element getElementTagInput(Document doc) {
         return doc.select("input[name]").first();
     }
 
@@ -29,7 +27,21 @@ public class GetElementsTags {
         if (tagsA.size()==0) {
             tagsA = getElementsAInСontainerTag(doc.select(":has(a[href])"),valid);
         }
+        if(!tagsA.attr("href").matches(VALID_URL_HREF))
+            tagsA.attr("href", PageSearch.startUrl + tagsA.attr("href"));
         return tagsA;
+    }
+
+    public static final Element getElementsForDate(Document doc, String valid){
+        Element rightTag = doc.select(":matches("+valid+")").last();
+        return rightTag;
+    }
+
+    public static final Element getElementsForTitle(Document doc){
+        Elements rightTags = doc.select("h1");
+        if(rightTags.text().length()>0)
+            return rightTags.first();
+        else return null;
     }
 
     // ===================================================================================================================

@@ -5,17 +5,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.Senkova.adapter.hibernate.RoleRepository;
 import ru.Senkova.adapter.hibernate.UserAppRepository;
+import ru.Senkova.adapter.rest.service.dto.SignUpFormDto;
 import ru.Senkova.app.api.UserAppService;
 import ru.Senkova.domain.Role;
 import ru.Senkova.domain.RoleName;
 import ru.Senkova.domain.UserApp;
 import ru.Senkova.exception.UserAppRegistrationException;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static ru.Senkova.exception.ResponseCodeException.*;
+import static ru.Senkova.exception.ResponseCodeException.LOGIN_ALREADY_EXISTS;
+import static ru.Senkova.exception.ResponseCodeException.EMAIL_ALREADY_EXISTS;
 
-@Service ("userAppService")
+@Service("userAppService")
 public class UserAppServiceImpl implements UserAppService {
 
     @Autowired
@@ -28,14 +32,8 @@ public class UserAppServiceImpl implements UserAppService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public UserApp findByLogin(String login){
+    public UserApp findByLogin(String login) {
         return userAppRepository.findByLogin(login);
-    }
-
-    @Override
-    public UserApp findUserById(Long userId) {
-        Optional<UserApp> userFromDb = userAppRepository.findById(userId);
-        return userFromDb.orElse(new UserApp());
     }
 
     @Override
@@ -44,37 +42,33 @@ public class UserAppServiceImpl implements UserAppService {
     }
 
     @Override
-    public boolean createUser(String login, String firstName, String patronymic, String lastName, String password, String email) {
-        String trimmedLoginInLowerCase = login.trim().toLowerCase();
+    public void createUser(SignUpFormDto dto) {
+        String trimmedLoginInLowerCase = dto.getLogin().trim().toLowerCase();
 
         validateRegisteredLogin(trimmedLoginInLowerCase);
-        validateRegisteredEmail(email);
+        validateRegisteredEmail(dto.getEmail());
 
-        UserApp user = new UserApp(trimmedLoginInLowerCase, firstName, patronymic, lastName, bCryptPasswordEncoder.encode(password), email);
+        UserApp userApp = new UserApp();
+        userApp.setLogin(trimmedLoginInLowerCase);
+        userApp.setFirstName(dto.getFirstName());
+        userApp.setPatronymic(dto.getPatronymic());
+        userApp.setLastName(dto.getLastName());
+        userApp.setEmail(dto.getEmail());
+        userApp.setHashPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+        //userApp.setRoles(transformationSetRole(RoleName.USER_ROLE));
 
-        //метод должен быть заменен в случае расширения ролей у пользователей
-        if(trimmedLoginInLowerCase == "admin")
+        if(trimmedLoginInLowerCase.equals("admin"))//RoleName.ADMIN_ROLE.getName()))
             transformationSetRole(RoleName.USER_ROLE,RoleName.ADMIN_ROLE);
-        else
-            transformationSetRole(RoleName.USER_ROLE);
+        else  transformationSetRole(RoleName.USER_ROLE);
 
-        userAppRepository.save(user);
-
-        List<UserApp> users = allUsers();
-        for (UserApp element : users){
-            if(element.getLogin()==trimmedLoginInLowerCase)
-                return true;
-        }
-        return false;
+        userAppRepository.save(userApp);
     }
 
     @Override
-    public boolean deleteUser(Long userId) {
+    public void deleteUser(Long userId) {
         if (userAppRepository.findById(userId).isPresent()) {
             userAppRepository.deleteById(userId);
-            return true;
         }
-        return false;
     }
 
     // ===================================================================================================================
@@ -84,47 +78,24 @@ public class UserAppServiceImpl implements UserAppService {
 
     private void validateRegisteredLogin(String login) {
         if (userAppRepository.existsByLogin(login)) {
-            throw new UserAppRegistrationException(INT_CODE_1_LOGIN_ALREADY_EXISTS);
+            throw new UserAppRegistrationException(LOGIN_ALREADY_EXISTS);
         }
     }
 
     private void validateRegisteredEmail(String email) {
         if (userAppRepository.existsByEmail(email)) {
-            throw new UserAppRegistrationException(INT_CODE_2_EMAIL_ALREADY_EXISTS);
+            throw new UserAppRegistrationException(EMAIL_ALREADY_EXISTS);
         }
     }
 
-    private Set<Role> transformationSetRole (RoleName... roleNames){
-        Set <Role> registeredRoles = new HashSet<>();
-        for(RoleName roleName : roleNames){
+    private Set<Role> transformationSetRole(RoleName... roleNames) {
+        Set<Role> registeredRoles = new HashSet<>();
+        for (RoleName roleName : roleNames) {
             Role role = new Role();
             role.setName(roleName);
             registeredRoles.add(role);
         }
         return registeredRoles;
     }
-/*    private Set<Role> validateAndGetRegisteredRoles(Set<String> rolesStrings) {
-        Set<Role> registeredRoles = new HashSet<>();
-
-        rolesStrings.forEach(roleString -> {
-            RoleName registeredRoleName = extractRoleNameFromRoleString(roleString);
-            Role registeredRole = roleRepository.findByName(registeredRoleName)
-                    .orElseThrow(() -> new UserAppRegistrationException(INT_CODE_5_NOT_NAME_WITH_ROLE_DB));
-            registeredRoles.add(registeredRole);
-        });
-
-        return registeredRoles;
-    }
-
-    private RoleName extractRoleNameFromRoleString(String roleString) {
-        switch (roleString.trim().toLowerCase()) {
-            case "admin":
-                return RoleName.ADMIN_ROLE;
-            case "user":
-                return RoleName.USER_ROLE;
-            default:
-                throw new UserAppRegistrationException(INT_CODE_4_INVALID_ROLE_REGISTRATION);
-        }
-    }*/
 
 }

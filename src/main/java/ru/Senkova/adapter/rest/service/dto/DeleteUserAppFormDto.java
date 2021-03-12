@@ -2,7 +2,7 @@ package ru.Senkova.adapter.rest.service.dto;
 
 import java.util.Set;
 
-public class DeleteUserAppFromDto {
+public class DeleteUserAppFormDto {
     private String login;
     private String email;
     private String firstName;
@@ -10,6 +10,15 @@ public class DeleteUserAppFromDto {
     private String lastName;
     private Set<String> roles;
     private String password;
+    private boolean confirmationMail;
+
+    public boolean isConfirmationMail() {
+        return confirmationMail;
+    }
+
+    public void setConfirmationMail(boolean confirmationMail) {
+        this.confirmationMail = confirmationMail;
+    }
 
     public String getLogin() {
         return login;

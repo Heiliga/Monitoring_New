@@ -1,19 +1,14 @@
 package ru.Senkova.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.hibernate.annotations.NaturalId;
-import org.jsoup.select.Elements;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
 
 
 @Entity
-@Table(name = "HYPERlINKS_USERAPP")
+@Table(name = "HYPERlINKS_USER_APP")
 @IdClass (HyperlinksUsersPK.class)
 public class HyperlinksUsers implements Serializable {
 
@@ -29,6 +24,23 @@ public class HyperlinksUsers implements Serializable {
 
     @Id
     private String keyWord;
+
+    @Transient
+    private String linkArticle;
+
+    public HyperlinksUsers() {
+    }
+
+    public HyperlinksUsers(Hyperlinks hyperlinks, String keyWord) {
+        this.hyperlinks = hyperlinks;
+        this.keyWord = keyWord;
+    }
+
+    public HyperlinksUsers(UserApp userApp, Hyperlinks hyperlinks, String keyWord) {
+        this(hyperlinks,keyWord);
+        this.userApp = userApp;
+    }
+
 
     public UserApp getUserApp() {
         return userApp;
@@ -54,61 +66,13 @@ public class HyperlinksUsers implements Serializable {
         this.keyWord = keyWord;
     }
 
-    @Transient
-    private String linkTitles;
-
-    @Transient
-    private Elements lastElements;
-
-    @Transient
-    private String tagForLastElements;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss yyyy-MM-dd")
-    private Date startMonitoring;
-
-    public HyperlinksUsers() {
+    public String getLinkArticle() {
+        return linkArticle;
     }
 
-    public HyperlinksUsers(Hyperlinks hyperlinks, String keyWord) {
-        this.hyperlinks = hyperlinks;
-        this.keyWord = keyWord;
-    }
-
-    public HyperlinksUsers(UserApp userApp, Hyperlinks hyperlinks, String keyWord) {
-        this(hyperlinks,keyWord);
-        this.userApp = userApp;
-    }
-
-    public Date getStartMonitoring() {
-        return startMonitoring;
-    }
-
-    public void setStartMonitoring(Date startMonitoring) {
-        this.startMonitoring = startMonitoring;
+    public void setLinkArticle(String linkArticle) {
+        this.linkArticle = linkArticle;
     }
 
 
-    public String getLinkTitles() {
-        return linkTitles;
-    }
-
-    public void setLinkTitles(String linkTitles) {
-        this.linkTitles = linkTitles;
-    }
-
-    public Elements getLastElements() {
-        return lastElements;
-    }
-
-    public void setLastElements(Elements lastElements) {
-        this.lastElements = lastElements;
-    }
-
-    public String getTagForLastElements() {
-        return tagForLastElements;
-    }
-
-    public void setTagForLastElements(String tagForLastElements) {
-        this.tagForLastElements = tagForLastElements;
-    }
 }

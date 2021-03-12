@@ -1,6 +1,5 @@
 package ru.Senkova.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,12 +13,19 @@ import ru.Senkova.exception.UserAppRegistrationException;
 import ru.Senkova.security.jwt.JwtProvider;
 import ru.Senkova.security.jwt.JwtResponse;
 
-import static ru.Senkova.exception.ResponseCodeException.INT_CODE_6_CONTOLLER_REGISTRATION;
+import static ru.Senkova.exception.ResponseCodeException.CONTROLLER_REGISTRATION;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/Monitoring/security")
+@RequestMapping(SecurityController.BASE_MAPPING)
 public class SecurityController {
+
+
+    //TODO: Переделать на бины
+
+    protected static final String BASE_MAPPING = "/Monitoring/security";
+    private static final String AUTHENTICATION = "/login";
+    private static final String REGISTRATION = "/registration";
 
     private UserAppService userAppService;
 
@@ -33,11 +39,12 @@ public class SecurityController {
         this.userAppService = userAppService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<JwtResponse> authenticateEmployee(@RequestBody LoginFormDto loginFormDto) {
+    @PostMapping(AUTHENTICATION)
+    public ResponseEntity<JwtResponse> authenticateUser(@RequestBody LoginFormDto loginFormDto) {
         String trimmedLoginInLowerCase = loginFormDto.getLogin().trim().toLowerCase();
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(trimmedLoginInLowerCase, loginFormDto.getPassword());
+
         Authentication authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -46,18 +53,12 @@ public class SecurityController {
         return ResponseEntity.ok(new JwtResponse(jwtToken));
     }
 
-    @PostMapping("/registration")
-    public ResponseEntity<String> addUser(@RequestBody SignUpFormDto signUpRequest) {
+    @PostMapping(REGISTRATION)
+    public ResponseEntity<String> addUserApp(@RequestBody SignUpFormDto signUpRequest) {
         try {
-            userAppService.createUser(
-                    signUpRequest.getLogin(),
-                    signUpRequest.getFirstName(),
-                    signUpRequest.getPatronymic(),
-                    signUpRequest.getLastName(),
-                    signUpRequest.getPassword(),
-                    signUpRequest.getEmail());
+            userAppService.createUser(signUpRequest);
         } catch (UserAppRegistrationException e) {
-            e = new UserAppRegistrationException(INT_CODE_6_CONTOLLER_REGISTRATION);
+            e = new UserAppRegistrationException(CONTROLLER_REGISTRATION);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 

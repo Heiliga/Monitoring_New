@@ -9,6 +9,7 @@ public class SignUpFormDto {
     private String patronymic;
     private String lastName;
     private String password;
+    private boolean confirmationMail;
 
     public String getLogin() {
         return login;
@@ -56,5 +57,13 @@ public class SignUpFormDto {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public boolean isConfirmationMail() {
+        return confirmationMail;
+    }
+
+    public void setConfirmationMail(boolean confirmationMail) {
+        this.confirmationMail = confirmationMail;
     }
 }

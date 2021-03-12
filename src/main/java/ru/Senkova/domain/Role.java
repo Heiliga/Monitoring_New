@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_id_generator")
-    @SequenceGenerator(name = "role_id_generator", sequenceName = "sp_role_id", allocationSize = 1)
+    @SequenceGenerator(name = "role_id_generator", sequenceName = "sq_role_id", allocationSize = 1)
     private Long id;
 
     @NaturalId

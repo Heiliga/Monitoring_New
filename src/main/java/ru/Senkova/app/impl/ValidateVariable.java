@@ -1,27 +1,32 @@
 package ru.Senkova.app.impl;
 
-import javafx.scene.transform.Scale;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import ru.Senkova.app.impl.pages.PageSearch;
-import ru.Senkova.app.impl.pages.PageTitles;
-
-import java.util.Scanner;
-
 public class ValidateVariable {
-    public static final String VALID_TAG_FOR_PAGE_SEARCH_BY_CLASS = ".*search.*";
     public static final String VALID_TAG_FOR_PAGE_TITLE = ".*title.*";
     public static final String VALID_TAG_FOR_PAGE_TITLE_BY_TEXT = "[пП]о [вВДд][ра][те][ме]е?н?и?";
-    public static final String VALID_TAG_FOR_PAGE_TITLE_BY_DATE = ".*date.*";
-    public static final String VALID_TAG_FOR_PAGE_TITLE_BY_LENGTH = ".{10}";
+    public static final String VALID_TAG_FOR_DATE = ".{0,10}[0-9].{0,10}[2[0-9]][0[0-9]][2:][1[0-9]][.?[0-9]].*";
+    public static final String VALID_URL_HREF_ALL = "http.*";
+    public static final String VALID_URL_HREF_DOMAIN = ".*+.+.?";
+    public static final String VALID_HTML_IMG =".*<img class=.?logo.*";
+    public static final String VALID_HTML_P1 =".*<p class=.?p1.*";
+    public static final String VALID_HTML_P2 =".*<p class=.?p2.*";
+    public static final String VALID_HTML_P3 =".*<p class=.?p3.*";
 
-    public static void main(String[] args){
-        PageSearch pageSearch = new PageSearch("https://habr.com/ru");
+/*    public static void main(String[] args){
+*//*        PageSearch pageSearch = new PageSearch("https://www.vesti.ru");
         PageTitles pageTitles=new PageTitles(pageSearch,"Москва");
-        pageTitles.getUrl();
-        Elements rightTags = GetElementsTags.getElementsWithTitles(pageTitles.getDoc(),VALID_TAG_FOR_PAGE_TITLE);
-        for (Element element: rightTags){
-            System.out.println(element);
-        }
-    }
+        PageTitleAndDate titleAndDate= new PageTitleAndDate(pageTitles);
+        String time = titleAndDate.getTime();
+        System.out.println(time);*//*
+        EmailSender emailSender=new EmailSender();
+        SendEmailFromDto dto = new SendEmailFromDto();
+        dto.setArticle("Москва");
+        dto.setDate("в 15:15");
+        dto.setEmailUser("Olgary58@mail.ru");
+        dto.setLinkArticle("https://ria.ru/20210309/erevan-1600511705.html");
+        dto.setLogin("Heiliga");
+        dto.setLinkSite("https://ria.ru/");
+        dto.setArticle("В Ереване полиция пытается взять в кольцо протестующих у парламента");
+
+        emailSender.sendEmail(dto);
+    }*/
 }

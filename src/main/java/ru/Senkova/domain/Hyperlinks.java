@@ -5,7 +5,7 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "HYPERLINKS", schema = "PUBLIC")
+@Table(name = "HYPERLINKS")
 public class Hyperlinks {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "link_id_generator")

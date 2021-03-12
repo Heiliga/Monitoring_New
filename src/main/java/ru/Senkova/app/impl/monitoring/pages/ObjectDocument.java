@@ -1,4 +1,4 @@
-package ru.Senkova.app.impl.pages;
+package ru.Senkova.app.impl.monitoring.pages;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -6,7 +6,7 @@ import ru.Senkova.exception.ParsingSoupException;
 
 import java.io.IOException;
 
-import static ru.Senkova.exception.ResponseCodeException.INT_CODE_7_NOT_Creation_Document;
+import static ru.Senkova.exception.ResponseCodeException.NOT_Creation_Document;
 
 public abstract class ObjectDocument {
 
@@ -26,7 +26,7 @@ public abstract class ObjectDocument {
         this.url=url;
     }
 
-    private final boolean getConnectJsoup(){
+    private final boolean isJsoupConnected(){
         try{
             this.doc = Jsoup.connect(url)
                     .userAgent("Chrome/4.0.249.0 Safari/532.5")
@@ -40,13 +40,12 @@ public abstract class ObjectDocument {
     }
 
     public Document getDoc(){
-        if(getConnectJsoup() == false)
-            throw new ParsingSoupException(INT_CODE_7_NOT_Creation_Document);
+        if(!isJsoupConnected())
+            throw new ParsingSoupException(NOT_Creation_Document);
         return doc;
     }
     public void setDoc(Document doc){
         this.doc=doc;
     }
-
 
 }
