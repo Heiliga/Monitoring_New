@@ -1,5 +1,6 @@
 package ru.Senkova.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,24 +21,19 @@ import static ru.Senkova.exception.ResponseCodeException.CONTROLLER_REGISTRATION
 @RequestMapping(SecurityController.BASE_MAPPING)
 public class SecurityController {
 
-
-    //TODO: Переделать на бины
-
     protected static final String BASE_MAPPING = "/Monitoring/security";
     private static final String AUTHENTICATION = "/login";
     private static final String REGISTRATION = "/registration";
 
+    @Autowired
     private UserAppService userAppService;
 
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    private final JwtProvider jwtProvider;
+    @Autowired
+    private JwtProvider jwtProvider;
 
-    public SecurityController(AuthenticationManager authenticationManager, JwtProvider jwtProvider, UserAppService userAppService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtProvider = jwtProvider;
-        this.userAppService = userAppService;
-    }
 
     @PostMapping(AUTHENTICATION)
     public ResponseEntity<JwtResponse> authenticateUser(@RequestBody LoginFormDto loginFormDto) {

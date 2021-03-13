@@ -20,6 +20,9 @@ public class TimerServiceImpl implements TimerService {
     @Autowired
     private HyperlinksUsersRepository hyperlinksUsersRepository;
 
+    @Autowired
+    private EmailSender emailSender;
+
     private HyperlinksUsers hyperlinksUsers;
     private Timer timer;
     private long period;
@@ -28,40 +31,37 @@ public class TimerServiceImpl implements TimerService {
 
     private PageTitles pageTitles;
 
-
     {
         period = 2000;
     }
 
-    public TimerServiceImpl() {
-    }
 
-    public TimerServiceImpl(SendEmailFormDto dto, PageTitles pageTitles, HyperlinksUsers hyperlinksUsers) {
-        this.dto=dto;
-        this.pageTitles=pageTitles;
-        this.hyperlinksUsers=hyperlinksUsers;
+    public TimerServiceImpl(SendEmailFormDto dto, PageTitles pageTitles, HyperlinksUsers hyperlinksUsers, HyperlinksUsersRepository hyperlinksUsersRepository) {
+        this.dto = dto;
+        this.pageTitles = pageTitles;
+        this.hyperlinksUsers = hyperlinksUsers;
+        this.hyperlinksUsers = hyperlinksUsers; //Todo Убрать конструктор. Перенести Атрибуты в метод
     }
-
 
     //    @Scheduled(cron = )
-    public void monitoring(){
-        if(timer != null) {
-            timer.cancel();
+    public void monitoring() {
+        if (timer != null) {
+            finishMonitoring();
             return;
         }
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                Elements elementsArticle =  pageTitles.getElementsArticles();
-                int size=elementsArticle.size();
-                int i=0;
-                while(elementsArticle.get(size-i).attr("href")!=pageTitles.getLinkLastElement()){
-                    PageTitleAndDate pageTitleAndDate=new PageTitleAndDate(elementsArticle.get(size-i).attr("href"));
+                Elements elementsArticle = pageTitles.getElementsArticles();
+                int size = elementsArticle.size();
+                int i = 1;
+                while (elementsArticle.get(size - i).attr("href").equals(pageTitles.getLinkLastElement())) {
+                    String link = elementsArticle.get(size - i).attr("href");
+                    PageTitleAndDate pageTitleAndDate = new PageTitleAndDate(link);
                     dto.setDate(pageTitleAndDate.getTime());
                     dto.setArticle(pageTitleAndDate.getArticle());
                     dto.setLinkArticle(pageTitleAndDate.getUrl());
-                    EmailSender emailSender=new EmailSender();
                     emailSender.sendEmail(dto);
                     i++;
                 }
@@ -69,7 +69,9 @@ public class TimerServiceImpl implements TimerService {
                 hyperlinksUsersRepository.save(hyperlinksUsers);
             }
         }, 1000, period);
-
     }
 
+    public void finishMonitoring() {
+        timer.cancel();
+    }
 }

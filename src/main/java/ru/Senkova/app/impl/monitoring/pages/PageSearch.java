@@ -8,18 +8,20 @@ import static ru.Senkova.exception.ResponseCodeException.NOT_FOUND_INPUT;
 
 public class PageSearch extends ObjectDocument {
 
-    public static String startUrl;
+    public static String startUrl; //todo убрать статику
+
     public PageSearch(String url) {
-        super(url +"/search/");
-        startUrl=url;
+        super(url + "/search/");
+        startUrl = url;
     }
 
 
-    public String buildUrlPageTitle(String keyWord){
+    public String buildUrlPageTitle(String keyWord,String url) {
+        setUrl(url+"/search/");
         Element inputElement = GetElementsTags.getElementTagInput(getDoc());
-        if(inputElement==null)
+        if (inputElement == null) {
             throw new ParsingSoupException(NOT_FOUND_INPUT);
-        return getUrl()+"?"+inputElement.attr("name")+"="+keyWord;
+        }
+        return getUrl() + "?" + inputElement.attr("name") + "=" + keyWord;
     }
-
 }

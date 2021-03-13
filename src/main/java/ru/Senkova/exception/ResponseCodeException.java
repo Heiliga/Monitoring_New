@@ -5,7 +5,8 @@ public enum ResponseCodeException {
     EMAIL_ALREADY_EXISTS(2,"Employee with this email already exists!"),
     CONTROLLER_REGISTRATION(3,"Exception in working with the controller "),
     NOT_Creation_Document(4,"Сan't connect to url server. Error creation object Document"),
-    NOT_FOUND_INPUT(5,"Didn't found tag-input for page Search");
+    NOT_FOUND_INPUT(5,"Didn't found tag-input for page Search"),
+    NOT_FOUND_FILE(5,"Didn't found tag-input for page Search");
 
     private Integer code;
     private String message;

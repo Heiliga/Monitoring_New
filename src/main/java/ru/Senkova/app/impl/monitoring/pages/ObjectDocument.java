@@ -18,6 +18,7 @@ public abstract class ObjectDocument {
         this.url=url;
     }
 
+
     public String getUrl() {
         return url;
     }

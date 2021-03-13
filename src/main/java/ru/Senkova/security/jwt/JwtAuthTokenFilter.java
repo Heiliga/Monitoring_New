@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-
+@Component
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 

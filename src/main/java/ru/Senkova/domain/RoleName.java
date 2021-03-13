@@ -1,9 +1,7 @@
 package ru.Senkova.domain;
 
 public enum RoleName {
-    USER_ROLE,
-    ADMIN_ROLE;
-/*    USER_ROLE("user"),
+    USER_ROLE("user"),
     ADMIN_ROLE("admin");
     private String name;
 
@@ -13,5 +11,5 @@ public enum RoleName {
 
     public String getName() {
         return name;
-    }*/
+    }
 }

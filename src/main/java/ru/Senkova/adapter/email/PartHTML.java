@@ -1,14 +1,13 @@
 package ru.Senkova.adapter.email;
 
+import ru.Senkova.adapter.rest.service.dto.SendEmailFormDto;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 import static ru.Senkova.app.impl.ValidateVariable.*;
-import ru.Senkova.adapter.rest.service.dto.SendEmailFormDto;
 
 
-public class PartHTML extends IOException {
+public class PartHTML {
 
     public static final String getPartCodeHtml(SendEmailFormDto dto, Scanner inFile) {
         StringBuilder builder = new StringBuilder();

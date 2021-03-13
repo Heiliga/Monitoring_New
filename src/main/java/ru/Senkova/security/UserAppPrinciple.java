@@ -103,7 +103,7 @@ public class UserAppPrinciple implements UserDetails {
                 new SimpleGrantedAuthority(role.getName().name())
         ).collect(Collectors.toList());
 
-        return new UserAppPrinciple(
+        return new UserAppPrinciple( // TODO
                 user.getId(),
                 user.getLogin(),
                 user.getEmail(),

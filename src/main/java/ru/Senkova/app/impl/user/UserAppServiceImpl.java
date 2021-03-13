@@ -31,6 +31,13 @@ public class UserAppServiceImpl implements UserAppService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    public UserAppServiceImpl(UserAppRepository userAppRepository, RoleRepository roleRepository,
+        BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userAppRepository = userAppRepository;
+        this.roleRepository = roleRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
     @Override
     public UserApp findByLogin(String login) {
         return userAppRepository.findByLogin(login);
@@ -57,9 +64,9 @@ public class UserAppServiceImpl implements UserAppService {
         userApp.setHashPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
         //userApp.setRoles(transformationSetRole(RoleName.USER_ROLE));
 
-        if(trimmedLoginInLowerCase.equals("admin"))//RoleName.ADMIN_ROLE.getName()))
-            transformationSetRole(RoleName.USER_ROLE,RoleName.ADMIN_ROLE);
-        else  transformationSetRole(RoleName.USER_ROLE);
+        if(trimmedLoginInLowerCase.equals(RoleName.ADMIN_ROLE.getName()))
+            userApp.setRoles(transformationSetRole(RoleName.USER_ROLE,RoleName.ADMIN_ROLE));
+        else  userApp.setRoles(transformationSetRole(RoleName.USER_ROLE));
 
         userAppRepository.save(userApp);
     }

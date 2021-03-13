@@ -29,7 +29,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(5).toInstant()))
+                .setExpiration(Date.from(ZonedDateTime.now().plusDays(7).toInstant()))
                 .claim("currentUser", toJsonString(userPrincipal))
                 .signWith(SignatureAlgorithm.HS512, JWT_SIGN_SECRET)
                 .compact();

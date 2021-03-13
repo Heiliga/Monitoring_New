@@ -7,7 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ru.Senkova.app.impl.monitoring.pages.PageSearch;
 
-import static ru.Senkova.app.impl.ValidateVariable.VALID_URL_HREF;
+import static ru.Senkova.app.impl.ValidateVariable.VALID_URL_HREF_ALL;
 
 public class GetElementsTags {
 
@@ -27,7 +27,7 @@ public class GetElementsTags {
         if (tagsA.size()==0) {
             tagsA = getElementsAInСontainerTag(doc.select(":has(a[href])"),valid);
         }
-        if(!tagsA.attr("href").matches(VALID_URL_HREF))
+        if(!tagsA.attr("href").matches(VALID_URL_HREF_ALL))
             tagsA.attr("href", PageSearch.startUrl + tagsA.attr("href"));
         return tagsA;
     }
