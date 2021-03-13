@@ -30,17 +30,7 @@ public class UserAppPrinciple implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserAppPrinciple(Long id, String login, String email, String hashPassword, String firstName, String lastName, String patronymic,
-        List<GrantedAuthority> authorities){
-        this.id = id;
-        this.password = hashPassword;
-        this.email=email;
-        this.login=login;
-        this.authorities=authorities;
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.patronymic=patronymic;
-
+    public UserAppPrinciple() {
     }
 
     public Long getId() {
@@ -49,6 +39,54 @@ public class UserAppPrinciple implements UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 
     @Override
@@ -100,18 +138,19 @@ public class UserAppPrinciple implements UserDetails {
     }
     public static UserAppPrinciple build(UserApp user) {
         List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
-                new SimpleGrantedAuthority(role.getName().name())
+                new SimpleGrantedAuthority(role.getName())
         ).collect(Collectors.toList());
 
-        return new UserAppPrinciple( // TODO
-                user.getId(),
-                user.getLogin(),
-                user.getEmail(),
-                user.getHashPassword(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getPatronymic(),
-                authorities
-        );
+        UserAppPrinciple userAppPrinciple=new UserAppPrinciple();
+        userAppPrinciple.setId(user.getId());
+        userAppPrinciple.setAuthorities(authorities);
+        userAppPrinciple.setEmail(user.getEmail());
+        userAppPrinciple.setFirstName(user.getFirstName());
+        userAppPrinciple.setLastName(user.getLastName());
+        userAppPrinciple.setLogin(user.getLogin());
+        userAppPrinciple.setPassword(user.getHashPassword());
+        userAppPrinciple.setPatronymic(user.getPatronymic());
+
+        return userAppPrinciple;
     }
 }

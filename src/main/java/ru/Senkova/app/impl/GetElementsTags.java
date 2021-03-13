@@ -22,18 +22,19 @@ public class GetElementsTags {
         return doc.select("input[name]").first();
     }
 
-    public static final Elements getElementsWithTitles(Document doc, String valid) {
+    public static final Elements getElementsWithTitles(Document doc, String valid, String startUrl) {
         Elements tagsA = getElementsTagA(doc.select("a[href]"),valid);
         if (tagsA.size()==0) {
             tagsA = getElementsAInСontainerTag(doc.select(":has(a[href])"),valid);
         }
         if(!tagsA.attr("href").matches(VALID_URL_HREF_ALL))
-            tagsA.attr("href", PageSearch.startUrl + tagsA.attr("href"));
+            tagsA.attr("href", startUrl + tagsA.attr("href"));
         return tagsA;
     }
 
-    public static final Element getElementsForDate(Document doc, String valid){
-        Element rightTag = doc.select(":matches("+valid+")").last();
+    public static final Element getElementsForDate(Document doc, String validValue){
+        Elements rightTags = doc.select(":matchesOwn("+validValue+")");
+        Element rightTag = doc.select(":matchesOwn("+validValue+")").first();
         return rightTag;
     }
 

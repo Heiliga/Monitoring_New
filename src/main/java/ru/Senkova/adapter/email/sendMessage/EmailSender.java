@@ -7,6 +7,7 @@ import java.util.Properties;
 import java.util.Scanner;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
+import javax.annotation.PostConstruct;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -29,11 +30,13 @@ public class EmailSender{
 
     @Autowired
     private EmailSenderConfiguration emailSenderConfiguration;
+
     private Session session;
     private String username;
     private String password;
 
-    public EmailSender() {
+
+    public void sendEmail (SendEmailFormDto dto){
         Properties properties = new Properties();
         properties.put("mail.smtp.host", emailSenderConfiguration.getHost());
         properties.put("mail.smtp.port", emailSenderConfiguration.getPort());
@@ -48,15 +51,14 @@ public class EmailSender{
                     return new PasswordAuthentication(username, password);
                 }
             });
-    }
-
-    public void sendEmail(SendEmailFormDto dto){
 
         try {
             MimeMessage message = buildMessage(dto);
             Transport.send(message);
 
-        } catch (MessagingException | IOException mex ) { mex.printStackTrace(); } //todo
+        } catch (MessagingException | IOException mex ) {
+            mex.printStackTrace();
+        }
 
     }
 
@@ -71,9 +73,6 @@ public class EmailSender{
         message.setSubject(dto.getLogin()+", не пропусти новую статью");
 
         Multipart mp = new MimeMultipart();
-
-        if(new File(PATH + "/html/index.html").exists())
-           throw new IOException(NOT_FOUND_FILE.getMessage());
 
         Scanner inFile = new Scanner(Paths.get(PATH + "/html/index.html"));
         MimeBodyPart htmlPart = new MimeBodyPart();
@@ -92,4 +91,3 @@ public class EmailSender{
         return message;
     }
 }
-

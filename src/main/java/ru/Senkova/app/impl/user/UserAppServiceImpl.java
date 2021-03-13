@@ -31,12 +31,6 @@ public class UserAppServiceImpl implements UserAppService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserAppServiceImpl(UserAppRepository userAppRepository, RoleRepository roleRepository,
-        BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userAppRepository = userAppRepository;
-        this.roleRepository = roleRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
 
     @Override
     public UserApp findByLogin(String login) {
@@ -64,9 +58,11 @@ public class UserAppServiceImpl implements UserAppService {
         userApp.setHashPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
         //userApp.setRoles(transformationSetRole(RoleName.USER_ROLE));
 
-        if(trimmedLoginInLowerCase.equals(RoleName.ADMIN_ROLE.getName()))
-            userApp.setRoles(transformationSetRole(RoleName.USER_ROLE,RoleName.ADMIN_ROLE));
-        else  userApp.setRoles(transformationSetRole(RoleName.USER_ROLE));
+
+        if(trimmedLoginInLowerCase.equals(RoleName.ADMIN_ROLE.getName())){
+            userApp.setRoles(new HashSet<Role>(roleRepository.findAll()));
+        }
+        else  userApp.setRoles(new HashSet<Role>(roleRepository.findAllByName(RoleName.USER_ROLE.getName())));
 
         userAppRepository.save(userApp);
     }
@@ -95,14 +91,5 @@ public class UserAppServiceImpl implements UserAppService {
         }
     }
 
-    private Set<Role> transformationSetRole(RoleName... roleNames) {
-        Set<Role> registeredRoles = new HashSet<>();
-        for (RoleName roleName : roleNames) {
-            Role role = new Role();
-            role.setName(roleName);
-            registeredRoles.add(role);
-        }
-        return registeredRoles;
-    }
 
 }

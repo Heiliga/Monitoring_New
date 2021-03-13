@@ -20,6 +20,6 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 //        if (request.getAttribute("currentUser") == null || request.getAttribute("currentUser").equals("")) {
 //                    LOGGER.error("Unauthorized error. Message - {}", e.getMessage());
 //                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error -> Unauthorized");
-//        } //Todo check exceptions
+//        } // check exceptions
     }
 }

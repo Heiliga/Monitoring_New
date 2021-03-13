@@ -9,24 +9,27 @@ import java.util.Date;
 
 @Entity
 @Table(name = "HYPERlINKS_USER_APP")
-@IdClass (HyperlinksUsersPK.class)
 public class HyperlinksUsers implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pk_hyperlinks_user_app_id")
+    @SequenceGenerator(name = "pk_hyperlinks_user_app_id", sequenceName = "sq_hyperlinks_user_app_id", allocationSize = 1)
+    private Long id;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="idUserApp")
     private UserApp userApp;
 
-    @Id
     @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn (name="idHyperlinks")
     private Hyperlinks hyperlinks;
 
-    @Id
     private String keyWord;
 
-    @Transient
     private String linkArticle;
+    private String linkTitles;
+    //private boolean startMonitoring;
 
     public HyperlinksUsers() {
     }
@@ -75,4 +78,19 @@ public class HyperlinksUsers implements Serializable {
     }
 
 
+    public String getLinkTitles() {
+        return linkTitles;
+    }
+
+    public void setLinkTitles(String linkTitles) {
+        this.linkTitles = linkTitles;
+    }
+
+/*    public boolean isStartMonitoring() {
+        return startMonitoring;
+    }
+
+    public void setStartMonitoring(boolean startMonitoring) {
+        this.startMonitoring = startMonitoring;
+    }*/
 }

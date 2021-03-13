@@ -11,10 +11,9 @@ public class PageTitles extends ObjectDocument {
 
     private boolean flag = false;
     private String linkLastElement;
-    private Elements elementsArticles;
 
-    public PageTitles(PageSearch pageSearch, String keyWord) {
-        super(pageSearch.buildUrlPageTitle(keyWord));
+    public PageTitles(String url) {
+        super(url);
     }
 
     @Override
@@ -26,13 +25,14 @@ public class PageTitles extends ObjectDocument {
         return super.getUrl();
     }
 
-    public final Elements getElementsArticles() {
-        return GetElementsTags.getElementsWithTitles(getDoc(), VALID_TAG_FOR_PAGE_TITLE);
+    public final Elements getElementsArticles(String url) {
+
+        return GetElementsTags.getElementsWithTitles(getDoc(), VALID_TAG_FOR_PAGE_TITLE,url);
     }
 
-    public final String getLinkLastElement() {
+    public final String getLinkLastElement(String url) {
         if (!flag) {
-            Elements elementTagA = getElementsArticles();
+            Elements elementTagA = getElementsArticles(url);
             flag = true;
             if (elementTagA.size() == 0) {
                 return null;
@@ -41,9 +41,5 @@ public class PageTitles extends ObjectDocument {
         } else {
             return linkLastElement;
         }
-    }
-
-    public void setLinkLastElement(String lastElement) {
-        this.linkLastElement = lastElement;
     }
 }

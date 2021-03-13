@@ -14,8 +14,7 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @NaturalId
-    @Enumerated(EnumType.STRING)
-    private RoleName name;
+    private String name;
 
     public Role() {
     }
@@ -24,7 +23,7 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public Role(Long id, RoleName name) {
+    public Role(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -37,16 +36,21 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public RoleName getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(RoleName name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     @Override
     public String getAuthority() {
-        return getName().name();
+        return getName();
     }
+
+/*    @Override
+    public String getAuthority() {
+        return getName().name();
+    }*/
 }

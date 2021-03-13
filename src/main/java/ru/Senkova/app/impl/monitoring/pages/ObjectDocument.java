@@ -13,7 +13,6 @@ public abstract class ObjectDocument {
     private Document doc;
     private String url;
 
-    //Обязательно проделать манипуляции с преобразованием url под каждый класс
     public ObjectDocument(String url) {
         this.url=url;
     }

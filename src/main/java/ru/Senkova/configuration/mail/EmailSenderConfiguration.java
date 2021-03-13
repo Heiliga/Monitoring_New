@@ -4,10 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-/**
- * todo Document type EmailSenderConfiguration
- */
-
 @Configuration
 public class EmailSenderConfiguration {
 

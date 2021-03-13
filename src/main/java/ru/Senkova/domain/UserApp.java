@@ -41,7 +41,7 @@ public class UserApp {
         this.passwordConfirm = passwordConfirm;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinTable(
             name = "ROLE_USER_APP",
             joinColumns = @JoinColumn(name = "ID_USER_APP"),

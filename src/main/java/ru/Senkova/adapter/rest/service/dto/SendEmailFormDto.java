@@ -14,9 +14,18 @@ public class SendEmailFormDto {
     private String patronymic;
     private String keyWord;
 
+    public void setNameSite(String nameSite) {
+        this.nameSite = nameSite;
+    }
+
     public String getNameSite() {
-        String linkWithOutHTTP=linkSite.substring(0,linkSite.indexOf('/'));
-        return linkWithOutHTTP.substring(1,linkSite.indexOf('/'));
+        String linkWithOutHTTP = linkSite.substring(0,linkSite.indexOf("/"));
+        linkSite = linkSite.replace(linkWithOutHTTP,"");
+        linkSite = linkSite.substring(2);
+        if(linkSite.indexOf('/')!=-1)
+            return linkSite.substring(0,linkSite.indexOf("/"));
+        else return linkSite;
+
     }
 
     public String getKeyWord() {

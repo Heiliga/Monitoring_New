@@ -1,8 +1,9 @@
 package ru.Senkova.app.api;
 
-/**
- * todo Document type TimerService
- */
+import ru.Senkova.adapter.rest.service.dto.SendEmailFormDto;
+import ru.Senkova.domain.HyperlinksUsers;
+
 public interface TimerService {
-    public void monitoring();
+    public void monitoring(SendEmailFormDto dto);
+    void finishMonitoring();
 }
